@@ -170,3 +170,92 @@ The virtual machine 'linux' has terminated unexpectedly during startup with exit
 
 2. 進bios，選項可能各家bios文字略有出入。關鍵字為virtual，該選項需設置為enable
 
+
+
+## sql補充
+
+### **🔍 问题根源：**
+
+你的 MySQL 用户 'uriel' 的 **主机（host）绑定** 是：
+
+- 'uriel'@'uriel-BM6875-BM6675-BP6375'
+
+但是你尝试登录时的主机是：
+
+- 'uriel'@'localhost'
+
+🛑 **这两个不是同一个用户**，所以你使用密码登录 'uriel'@'localhost' 是无效的！
+
+
+
+------
+
+
+
+## **✅ 解决方法：创建** **'uriel'@'localhost'** **用户**
+
+你需要在 MySQL 中 **显式地创建** 'uriel'@'localhost' 用户，并设置密码。
+
+请按照以下步骤操作：
+
+
+
+------
+
+
+
+### **1️⃣ 使用** **sudo** **登录 MySQL（你已经可以登录）：**
+
+```sql
+sudo mysql
+```
+
+
+
+
+
+------
+
+
+
+### **2️⃣ 创建** **'uriel'@'localhost'** **用户并赋权：**
+
+```sql
+CREATE USER 'uriel'@'localhost' IDENTIFIED BY '111111';
+
+GRANT ALL PRIVILEGES ON *.* TO 'uriel'@'localhost' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+```
+
+
+
+
+
+------
+
+
+
+### **3️⃣ 退出 MySQL：**
+
+```sql
+EXIT;
+```
+
+
+
+
+
+------
+
+
+
+### **4️⃣ 测试登录是否成功：**
+
+```sql
+mysql -u uriel -p
+```
+
+
+
+输入你刚设置的密码：111111
